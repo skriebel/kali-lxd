@@ -1,6 +1,8 @@
 # kali-lxd
 Kali Linux on a LXD container
 
+NOTE:  This is a work in progress!
+
 A lot of this is based on: https://blog.simos.info/how-to-easily-run-graphics-accelerated-gui-apps-in-lxd-containers-on-your-ubuntu-desktop/
 
  # Host Prep.
