@@ -1,6 +1,6 @@
 config:
   environment.DISPLAY: :0
-  raw.idmap: both 1000 1000
+  raw.idmap: both 1000 0
   user.user-data: |
     #cloud-config
     packages:
