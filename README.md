@@ -1,32 +1,31 @@
 # kali-lxd
 Kali Linux on a LXD container
 
-NOTE:  This is a work in progress!
-
-A lot of this is based on: https://blog.simos.info/how-to-easily-run-graphics-accelerated-gui-apps-in-lxd-containers-on-your-ubuntu-desktop/
+These instructions were tested with LXD version 4.7.
 
  # Host Prep.
 
-- If lxd was installed with `apt` follow "Step 1" instructions here: https://blog.simos.info/how-to-easily-run-graphics-accelerated-gui-apps-in-lxd-containers-on-your-ubuntu-desktop/
-
-- Create the GUI profiles:
+- Create the GUI profile:
   - Download `lxd-gui.profile` found in this repo.
-  - Run: `$ cat lxd-gui.profile | lxc profile edit gui`  
+  - Run: 
+    - `$ lxc profile create x11`
+    - `$ cat lxd-gui.profile | lxc profile edit x11`  
+  - Note:  This profile is based on information published on [Simos's Blog](https://blog.simos.info/).
 
 - Create the container:
-  - `$ lxc launch -p default -p gui images:debian/stretch kali`
-  
- - Remove the ACL on the X11 server.
-   - `$ xhost+`
-   - TODO: Do better.
+  - `$ lxc launch -p default -p x11 images:kali/current/amd64 kali`
   
  - Switch into the container:
    - `$ lxc exec kali -- /bin/bash`
   
-  - Inside the container:
-    - add `deb http://http.kali.org/kali kali-rolling main non-free contrib` and comment everything else out in `/etc/apt/sources.list`
-    - add the Kali developement key: `apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys 7D8D0BF6`
-    - run: `# apt update; apt upgrade`
- 
- - Go here for the packages:
-   - https://tools.kali.org/kali-metapackages
+ - Inside the container:
+   - Update the system 
+     - `# apt update; apt upgrade`
+   - Install basic system 
+     - `# apt install kali-linux-core apt-utils`
+   - Create user and configure.
+     - `# adduser kali`
+     - `# usermod -aG sudo kali`
+     - `# sed -i '1 i\TERM=xterm-256color' /home/kali/.bashrc`
+     - `# echo "export DISPLAY=:0" >> /home/kali/.bashrc`
+     - `# sh -c "echo 'Set disable_coredump false' > /etc/sudo.conf"`
