@@ -1,6 +1,6 @@
 config:
+  #raw.lxc: lxc.apparmor.profile = unconfined
   environment.DISPLAY: :0
-  raw.idmap: both 1000 0
   user.user-data: |
     #cloud-config
     packages:
@@ -8,10 +8,11 @@ config:
 description: GUI LXD profile
 devices:
   X0:
-    path: /tmp/.X11-unix/X0
-    source: /tmp/.X11-unix/X0
-    type: disk
-  mygpu:
-    type: gpu
-name: gui
-used_by:
+    bind: container
+    connect: unix:@/tmp/.X11-unix/X0
+    listen: unix:@/tmp/.X11-unix/X0
+    security.gid: "1000"
+    security.uid: "1000"
+    type: proxy
+name: x11
+used_by: []
